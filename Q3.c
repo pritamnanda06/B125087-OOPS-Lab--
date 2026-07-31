@@ -1,34 +1,35 @@
-#include<stdio.h>
+#include <stdio.h>
 
-void linSearch(int arr[],int n,int target){
-    int foundIndex = -1;
-    for(int i = 0;i<n;i++){
-        if(arr[i] == target){
-            foundIndex = i;
-            break;
+int linearSearch(const int arr[], int n, int target) {
+    for (int i = 0; i < n; i++) {
+        if (arr[i] == target) {
+            return i + 1; 
         }
     }
-
-    if(foundIndex != -1){
-        printf("Element %d found at : %d\n",target,foundIndex +1);
-    }else{
-        printf("Element not found");
-    }
+    return -1; 
 }
 
-int main(){
-    int n;
+int main() {
+    int n, target;
+    printf("Enter number of elements: ");
+    scanf("%d", &n);
+
     int arr[n];
-    int key;
-    printf("Enter no of elements :");
-    scanf("%d",&n);
-    printf("Enter %d integers :\n",n);
-    for(int i =0;i<n;i++){
-        scanf("%d",&arr[i]);
+    printf("Enter %d integers:\n", n);
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &arr[i]);
     }
 
-    printf("Element to search : ");
-    scanf("%d",&key);
-    linSearch(arr,n,key);
+    printf("Enter the element to search: ");
+    scanf("%d", &target);
+
+    int position = linearSearch(arr, n, target);
+
+    if (position != -1) {
+        printf("Element found at position: %d\n", position);
+    } else {
+        printf("Element not found\n");
+    }
+
     return 0;
 }

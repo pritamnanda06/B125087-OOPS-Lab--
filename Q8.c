@@ -1,27 +1,31 @@
-#include<stdio.h>
-#include<stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
 
-struct Student
-{
-    int roll;
-    char name[50];
-    float marks;
-};
+int main() {
+    int n;
+    printf("Enter number of elements: ");
+    scanf("%d", &n);
 
-int main(){
-    struct Student s;
-    struct Student *ptr = &s;
+    int *arr = (int *)malloc(n * sizeof(int));
 
-    printf("Enter Roll no : ");
-    scanf("%d",&ptr->roll);
-    printf("Enter name : ");
-    scanf("%s",ptr->name);
-    printf("Enter marks : ");
-    scanf("%f",&ptr->marks);
+    if (arr == NULL) {
+        printf("Memory allocation failed!\n");
+        return 1;
+    }
 
-    printf("Roll number : %d\n",ptr->roll);
-    printf("Name : %s\n",ptr->name);
-    printf("Marks : %f\n",ptr->marks);
+    printf("Enter %d integers:\n", n);
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &arr[i]);
+    }
+
+    printf("\nElements stored in dynamically allocated memory:\n");
+    for (int i = 0; i < n; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+
+    free(arr);
+    arr = NULL;
 
     return 0;
 }

@@ -1,41 +1,51 @@
-#include<stdio.h>
+#include <stdio.h>
 
-struct Student
-{
-    int roll;
+typedef struct {
+    int rollNumber;
     char name[50];
     float marks;
-};
+} Student;
 
-void analyzeStudents(struct Student s[],int n){
-    int topindex = 0;
-    float summarks = 0.0;
-    for(int i=0;i<n;i++){
-        summarks += s[i].marks;
-        if(s[i].marks>s[topindex].marks){
-            topindex = i;
+int findTopperIndex(const Student students[], int count) {
+    int topperIdx = 0;
+    for (int i = 1; i < count; i++) {
+        if (students[i].marks > students[topperIdx].marks) {
+            topperIdx = i;
         }
     }
-
-    float avgMarks = summarks/n;
-        printf("Avg class marks :%f",avgMarks);
-        printf("\nTop student details\n");
-        printf("Roll no : %d",s[topindex].roll);
-        printf("Name : %s",s[topindex].name);        
-        printf("Marks : %f",s[topindex].marks);
+    return topperIdx;
 }
 
-int main(){
-    struct Student students[5];
-
-    for(int i=0;i<5;i++){
-        printf("Roll no : ");
-        scanf("%d",&students[i].roll);
-        printf("Name : ");     
-        scanf("%s",students[i].name);   
-        printf("Marks : ");
-        scanf("%f",&students[i].marks);
+float calculateClassAverage(const Student students[], int count) {
+    float total = 0.0;
+    for (int i = 0; i < count; i++) {
+        total += students[i].marks;
     }
-    analyzeStudents(students,5);
+    return total / count;
+}
+
+int main() {
+    const int count = 5;
+    Student students[count];
+
+    for (int i = 0; i < count; i++) {
+        printf("Enter details for Student %d:\n", i + 1);
+        printf("Roll Number: ");
+        scanf("%d", &students[i].rollNumber);
+        printf("Name: ");
+        scanf(" %[^\n]", students[i].name);
+        printf("Marks: ");
+        scanf("%f", &students[i].marks);
+        printf("\n");
+    }
+
+    int topperIdx = findTopperIndex(students, count);
+    float average = calculateClassAverage(students, count);
+
+    printf("--- Performance Analysis ---\n");
+    printf("Highest Scorer: %s (Roll No: %d) with %.2f marks\n", 
+           students[topperIdx].name, students[topperIdx].rollNumber, students[topperIdx].marks);
+    printf("Class Average Marks: %.2f\n", average);
+
     return 0;
 }

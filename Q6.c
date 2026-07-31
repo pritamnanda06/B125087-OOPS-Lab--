@@ -1,33 +1,36 @@
-#include<stdio.h>
+#include <stdio.h>
 
-struct Student
-{
-    int roll;
+typedef struct {
+    int rollNumber;
     char name[50];
     float marks;
-};
+} Student;
 
-void inputStudents(struct Student s[],int n){
-    for(int i=0;i<n;i++){
-        printf("Roll no : ");
-        scanf("%d",&s[i].roll);
-        printf("Name : ");
-        scanf("%s",s[i].name);
-        printf("Marks : ");
-        scanf("%f",&s[i].marks);
+void displayStudentsTable(const Student students[], int count) {
+    printf("\n--------------------------------------------------\n");
+    printf("%-12s %-25s %-10s\n", "Roll No", "Name", "Marks");
+    printf("--------------------------------------------------\n");
+    for (int i = 0; i < count; i++) {
+        printf("%-12d %-25s %-10.2f\n", students[i].rollNumber, students[i].name, students[i].marks);
     }
+    printf("--------------------------------------------------\n");
 }
 
-void displayStudents(struct Student s[],int n){
-    for(int i=0;i<n;i++){
-        printf("%d %s %f",s[i].roll,s[i].name,s[i].marks);
+int main() {
+    const int count = 5;
+    Student students[count];
+
+    for (int i = 0; i < count; i++) {
+        printf("\nEnter details for Student %d:\n", i + 1);
+        printf("Roll Number: ");
+        scanf("%d", &students[i].rollNumber);
+        printf("Name: ");
+        scanf(" %[^\n]", students[i].name);
+        printf("Marks: ");
+        scanf("%f", &students[i].marks);
     }
-}
 
-int main(){
-    struct Student students[5];
+    displayStudentsTable(students, count);
 
-    inputStudents(students,5);
-    displayStudents(students,5);
     return 0;
 }
