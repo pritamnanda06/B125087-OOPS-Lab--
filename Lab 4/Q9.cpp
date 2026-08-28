@@ -2,83 +2,84 @@
 #include <string>
 using namespace std;
 
+class WalletManager;
+
 class DigitalWallet {
 private:
-    string userName;
+    string userName, walletStatus;
     double walletBalance;
-    string walletStatus; // e.g., "Active", "Disabled"
 
 public:
-    void acceptData() {
-        cout << "Enter User Name: ";
-        cin.ignore();
-        getline(cin, userName);
-        cout << "Enter Wallet Balance: ";
-        cin >> walletBalance;
-        cout << "Enter Wallet Status (Active/Disabled): ";
-        cin >> walletStatus;
-    }
+    DigitalWallet(string name, double balance, string status = "Active")
+        : userName(name), walletBalance(balance), walletStatus(status) {}
 
-    // Declare WalletManager as a friend class
     friend class WalletManager;
 };
 
 class WalletManager {
 public:
+    // 1. Display wallet details
     void displayWalletDetails(const DigitalWallet& w) {
-        cout << "\n--- Digital Wallet Details ---" << endl;
-        cout << "User Name: " << w.userName << endl;
-        cout << "Wallet Balance: $" << w.walletBalance << endl;
-        cout << "Wallet Status: " << w.walletStatus << endl;
+        cout << "\n--- Wallet Info ---\nUser: " << w.userName 
+             << "\nBalance: $" << w.walletBalance 
+             << "\nStatus: " << w.walletStatus << "\n-------------------\n";
     }
 
+    // 2. Add money
     void addMoney(DigitalWallet& w, double amount) {
-        if (amount > 0 && w.walletStatus == "Active") {
-            w.walletBalance += amount;
-            cout << "Successfully added $" << amount << " to " << w.userName << "'s wallet." << endl;
-        } else {
-            cout << "Failed to add money. Check wallet status or amount." << endl;
-        }
+        if (w.walletStatus != "Active") cout << "Error: Wallet is " << w.walletStatus << ".\n";
+        else if (amount > 0) cout << "Added $" << amount << ". Balance: $" << (w.walletBalance += amount) << endl;
     }
 
+    // 3. Deduct money
     void deductMoney(DigitalWallet& w, double amount) {
-        if (w.walletStatus != "Active") {
-            cout << "Wallet is disabled. Transaction failed." << endl;
-            return;
-        }
-        if (w.walletBalance >= amount) {
-            w.walletBalance -= amount;
-            cout << "Successfully deducted $" << amount << " from " << w.userName << "'s wallet." << endl;
-        } else {
-            cout << "Insufficient balance! Transaction failed." << endl;
-        }
+        if (w.walletStatus != "Active") cout << "Error: Wallet is " << w.walletStatus << ".\n";
+        else if (amount > w.walletBalance) cout << "Error: Insufficient balance ($" << w.walletBalance << ").\n";
+        else if (amount > 0) cout << "Deducted $" << amount << ". Remaining: $" << (w.walletBalance -= amount) << endl;
     }
 
+    // 4. Disable wallet
     void disableWallet(DigitalWallet& w) {
         w.walletStatus = "Disabled";
-        cout << w.userName << "'s wallet has been disabled." << endl;
+        cout << "Wallet disabled successfully.\n";
     }
 
+    // 5. Display wallet status
     void displayWalletStatus(const DigitalWallet& w) {
-        cout << "Current Wallet Status for " << w.userName << ": " << w.walletStatus << endl;
+        cout << "Current Status: " << w.walletStatus << endl;
     }
 };
 
 int main() {
-    DigitalWallet wallet;
-    wallet.acceptData();
+    string name;
+    double initialBalance, addAmt, deductAmt;
+
+    // Get user input
+    cout << "Enter User Name: ";
+    getline(cin, name);
+    cout << "Enter Initial Balance: $";
+    cin >> initialBalance;
+
+    DigitalWallet wallet(name, initialBalance);
     WalletManager wm;
 
+    // 1. Display Details
     wm.displayWalletDetails(wallet);
-    double addAmt, deductAmt;
-    cout << "Enter amount to add: ";
+
+    // 2. Add Money
+    cout << "Enter amount to add: $";
     cin >> addAmt;
     wm.addMoney(wallet, addAmt);
 
-    cout << "Enter amount to deduct: ";
+    // 3. Deduct Money
+    cout << "Enter amount to deduct: $";
     cin >> deductAmt;
     wm.deductMoney(wallet, deductAmt);
 
+    // 4 & 5. Status & Disable
+    wm.displayWalletStatus(wallet);
+    wm.disableWallet(wallet);
     wm.displayWalletDetails(wallet);
+
     return 0;
 }
