@@ -2,30 +2,24 @@
 using namespace std;
 
 class Duration {
-    int hours, minutes;
 public:
-    Duration(int h = 0, int m = 0) : hours(h), minutes(m) {}
-    void input(const char* name) {
-        cout << "Enter hours and minutes of " << name << ": ";
-        cin >> hours >> minutes;
-    }
-    Duration operator+(const Duration& o) const {
-        int totalMin = minutes + o.minutes;
-        return Duration(hours + o.hours + totalMin / 60, totalMin % 60);
-    }
-    void display() const {
-        cout << hours << " hr " << minutes << " min";
+    int h, m;
+    Duration(int hh = 0, int mm = 0) { h = hh; m = mm; }
+    Duration operator+(Duration d) {
+        int total = m + d.m;
+        return Duration(h + d.h + total / 60, total % 60);
     }
 };
 
 int main() {
-    Duration d1, d2;
-    d1.input("Duration 1");
-    d2.input("Duration 2");
-    Duration result = d1 + d2;
-    cout << "\nDuration 1 : "; d1.display();
-    cout << "\nDuration 2 : "; d2.display();
-    cout << "\nTotal      : "; result.display();
-    cout << endl;
-    return 0;
+    int h1, m1, h2, m2;
+    cout << "Enter hours and minutes of duration 1: ";
+    cin >> h1 >> m1;
+    cout << "Enter hours and minutes of duration 2: ";
+    cin >> h2 >> m2;
+
+    Duration d1(h1, m1), d2(h2, m2), d3 = d1 + d2;
+    cout << "Duration 1: " << d1.h << " hr " << d1.m << " min\n";
+    cout << "Duration 2: " << d2.h << " hr " << d2.m << " min\n";
+    cout << "Total     : " << d3.h << " hr " << d3.m << " min\n";
 }

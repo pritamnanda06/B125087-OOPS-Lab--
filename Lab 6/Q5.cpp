@@ -2,19 +2,18 @@
 using namespace std;
 
 class Score {
-    int score;
 public:
-    Score(int s = 0) : score(s) {}
-    Score& operator++() {          // prefix: increment, then return new value
-        ++score;
+    int score;
+    Score(int s = 0) { score = s; }
+    Score operator++() {          // prefix
+        score++;
         return *this;
     }
-    Score operator++(int) {        // postfix: return old value, then increment
-        Score old(*this);
-        ++score;
+    Score operator++(int) {       // postfix
+        Score old = *this;
+        score++;
         return old;
     }
-    int get() const { return score; }
 };
 
 int main() {
@@ -22,14 +21,9 @@ int main() {
     cout << "Enter initial score: ";
     cin >> s;
 
-    Score a(s);
+    Score a(s), b(s);
     Score pre = ++a;
-    cout << "\nAfter  pre = ++a :\n";
-    cout << "  a   = " << a.get() << "\n  pre = " << pre.get() << "  (new value)\n";
-
-    Score b(s);
     Score post = b++;
-    cout << "\nAfter  post = b++ :\n";
-    cout << "  b    = " << b.get() << "\n  post = " << post.get() << "  (old value)\n";
-    return 0;
+    cout << "Prefix  ++a : a = " << a.score << ", result = " << pre.score << endl;
+    cout << "Postfix b++ : b = " << b.score << ", result = " << post.score << endl;
 }

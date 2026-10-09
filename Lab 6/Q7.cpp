@@ -2,44 +2,31 @@
 using namespace std;
 
 class InventoryItem {
-    int id;
-    double price;
-    int qty;
 public:
-    InventoryItem(int i = 0, double p = 0, int q = 0) : id(i), price(p), qty(q) {}
-    void input(const char* name) {
-        cout << "Enter product ID, unit price and quantity of " << name << ": ";
-        cin >> id >> price >> qty;
-    }
-    bool compatible(const InventoryItem& o) const {
-        return id == o.id && price == o.price;
-    }
-    // Returns combined item if compatible; otherwise returns a default item
-    // (qty 0, id 0). Use compatible() to check beforehand.
-    InventoryItem operator+(const InventoryItem& o) const {
-        if (compatible(o)) return InventoryItem(id, price, qty + o.qty);
-        return InventoryItem();
-    }
-    void display() const {
-        cout << "ID: " << id << ", Unit Price: " << price << ", Quantity: " << qty;
+    int id, qty;
+    double price;
+    InventoryItem(int i = 0, double p = 0, int q = 0) { id = i; price = p; qty = q; }
+
+    // combines only if product ID and unit price match
+    InventoryItem operator+(InventoryItem x) {
+        if (id == x.id && price == x.price)
+            return InventoryItem(id, price, qty + x.qty);
+        cout << "Incompatible items (ID or unit price differs). Cannot combine.\n";
+        return InventoryItem();            // empty item; originals untouched
     }
 };
 
 int main() {
-    InventoryItem a, b;
-    a.input("Item 1");
-    b.input("Item 2");
-    cout << "\nItem 1: "; a.display();
-    cout << "\nItem 2: "; b.display();
-    cout << endl;
-    if (a.compatible(b)) {
-        InventoryItem c = a + b;
-        cout << "\nItems are compatible. Combined item:\n";
-        c.display();
-        cout << endl;
-    } else {
-        cout << "\nIncompatible items: product ID and/or unit price do not match.\n"
-             << "Items cannot be combined.\n";
-    }
-    return 0;
+    int i1, q1, i2, q2;
+    double p1, p2;
+    cout << "Enter ID, unit price, quantity of item 1: ";
+    cin >> i1 >> p1 >> q1;
+    cout << "Enter ID, unit price, quantity of item 2: ";
+    cin >> i2 >> p2 >> q2;
+
+    InventoryItem a(i1, p1, q1), b(i2, p2, q2);
+    InventoryItem c = a + b;
+    if (c.id != 0 || c.qty != 0)
+        cout << "Combined item -> ID: " << c.id << ", Price: " << c.price
+             << ", Quantity: " << c.qty << endl;
 }

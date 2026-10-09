@@ -2,32 +2,23 @@
 using namespace std;
 
 class Bill {
+public:
     int items;
     double total;
-public:
-    Bill(int i = 0, double t = 0) : items(i), total(t) {}
-    void input(const char* name) {
-        cout << "Enter number of items and total amount of " << name << ": ";
-        cin >> items >> total;
-    }
-    Bill operator+(const Bill& o) const {
-        return Bill(items + o.items, total + o.total);
-    }
-    bool operator>(const Bill& o) const { return total > o.total; }
-    void display(const char* label) const {
-        cout << label << "Items = " << items << ", Total = Rs. " << total << endl;
-    }
+    Bill(int i = 0, double t = 0) { items = i; total = t; }
+    Bill operator+(Bill b) { return Bill(items + b.items, total + b.total); }
+    bool operator>(Bill b) { return total > b.total; }
 };
 
 int main() {
-    Bill b1, b2;
-    b1.input("Bill 1");
-    b2.input("Bill 2");
-    Bill combined = b1 + b2;
-    cout << endl;
-    b1.display("Bill 1    : ");
-    b2.display("Bill 2    : ");
-    combined.display("Combined  : ");
-    cout << "\nBill 1 > Bill 2 : " << (b1 > b2 ? "true" : "false") << endl;
-    return 0;
+    int i1, i2;
+    double t1, t2;
+    cout << "Enter items and total of bill 1: ";
+    cin >> i1 >> t1;
+    cout << "Enter items and total of bill 2: ";
+    cin >> i2 >> t2;
+
+    Bill b1(i1, t1), b2(i2, t2), c = b1 + b2;
+    cout << "Combined bill: " << c.items << " items, Rs. " << c.total << endl;
+    cout << "Bill 1 > Bill 2 : " << (b1 > b2 ? "true" : "false") << endl;
 }

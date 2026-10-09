@@ -2,40 +2,30 @@
 using namespace std;
 
 class Matrix {
-    double m[2][2];
 public:
-    Matrix() { for (int i = 0; i < 2; i++) for (int j = 0; j < 2; j++) m[i][j] = 0; }
-    void input(const char* name) {
-        cout << "Enter 4 elements of " << name << " (row-wise): ";
-        for (int i = 0; i < 2; i++)
-            for (int j = 0; j < 2; j++)
-                cin >> m[i][j];
-    }
-    Matrix operator+(const Matrix& o) const {
+    int a[2][2];
+    Matrix operator+(Matrix m) {
         Matrix r;
         for (int i = 0; i < 2; i++)
             for (int j = 0; j < 2; j++)
-                r.m[i][j] = m[i][j] + o.m[i][j];
+                r.a[i][j] = a[i][j] + m.a[i][j];
         return r;
     }
-    void display(const char* label) const {
-        cout << label << endl;
-        for (int i = 0; i < 2; i++) {
-            cout << "  [ ";
-            for (int j = 0; j < 2; j++) cout << m[i][j] << " ";
-            cout << "]\n";
-        }
+    void show() {
+        for (int i = 0; i < 2; i++)
+            cout << a[i][0] << " " << a[i][1] << endl;
     }
 };
 
 int main() {
-    Matrix a, b;
-    a.input("Matrix A");
-    b.input("Matrix B");
-    Matrix c = a + b;
-    cout << endl;
-    a.display("Matrix A:");
-    b.display("Matrix B:");
-    c.display("A + B:");
-    return 0;
+    Matrix m1, m2;
+    cout << "Enter 4 elements of matrix 1: ";
+    for (int i = 0; i < 2; i++) for (int j = 0; j < 2; j++) cin >> m1.a[i][j];
+    cout << "Enter 4 elements of matrix 2: ";
+    for (int i = 0; i < 2; i++) for (int j = 0; j < 2; j++) cin >> m2.a[i][j];
+
+    Matrix m3 = m1 + m2;
+    cout << "Matrix 1:\n"; m1.show();
+    cout << "Matrix 2:\n"; m2.show();
+    cout << "Sum:\n";      m3.show();
 }
